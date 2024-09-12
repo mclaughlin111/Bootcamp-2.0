@@ -1,5 +1,7 @@
 ## Welcome to the power of ten exercise!
 
+(https://www.thepowerof10.info/)
+
 This is an exercise to test you knowledge of implementing table-based sorting and paging. It will help you develop the following skills:
 
 - using useReducer to amalgamate complex, multi field state into a single state
