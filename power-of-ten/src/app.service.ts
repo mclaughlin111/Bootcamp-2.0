@@ -4,6 +4,7 @@ import { Distance, Gender } from './TimesParameters';
 import { readFile } from 'fs/promises';
 import { SortField, SortOrder } from './TimesRequest';
 import orderby from 'lodash.orderby';
+import { TimesResponse } from './TimesResponse';
 
 @Injectable()
 export class AppService {
@@ -19,7 +20,7 @@ export class AppService {
     skip: number,
     sortField?: SortField,
     sortOrder?: SortOrder,
-  ): Promise<TimeRow[]> {
+  ): Promise<TimesResponse> {
     const allTimes = await this.readJsonFile(
       `./src/data/${distance}-${gender}.json`,
     );
@@ -28,6 +29,9 @@ export class AppService {
       sortField !== undefined
         ? orderby(allTimes, [sortField], [sortOrder!])
         : allTimes;
-    return orderedTimes.slice(skip, limit + skip);
+    return new TimesResponse(
+      orderedTimes.slice(skip, limit + skip),
+      allTimes.length,
+    );
   }
 }
