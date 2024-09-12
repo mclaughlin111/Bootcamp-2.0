@@ -23,6 +23,7 @@ export class TimesRequest {
     description: 'Number of times to return',
     example: 10,
     required: false,
+    enum: [10, 25, 50],
   })
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
@@ -46,6 +47,7 @@ export class TimesRequest {
     description: 'Number of times to skip',
     example: 'rank',
     required: false,
+    enum: SortField,
   })
   @IsEnum(SortField)
   @IsOptional()
@@ -56,6 +58,7 @@ export class TimesRequest {
     description: 'Direction to sort by',
     example: 'asc',
     required: false,
+    enum: SortOrder,
   })
   @IsEnum(SortOrder)
   @IsOptional()
