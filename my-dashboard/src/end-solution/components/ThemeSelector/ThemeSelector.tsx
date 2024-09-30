@@ -13,7 +13,7 @@ export const ThemeSelector = () => {
     >
       <MenuItem value="light">Light</MenuItem>
       <MenuItem value="dark">Dark</MenuItem>
-      <MenuItem value="birindar">Birindar</MenuItem>
+
       <MenuItem value="ugly">Ugly</MenuItem>
       <MenuItem value="bad">Bad</MenuItem>
     </StyledSelect>

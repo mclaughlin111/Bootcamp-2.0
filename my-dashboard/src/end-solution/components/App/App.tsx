@@ -1,4 +1,4 @@
-import { Container } from "../Container/Container";
+import { Container } from "../../../components/Container";
 
 export function App() {
   return <Container />;

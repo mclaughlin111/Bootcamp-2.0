@@ -1,1 +1,1 @@
-export type ThemeOption = "light" | "dark" | "birindar";
+export type ThemeOption = "light" | "dark" | "horriblyunreadable";

@@ -1,0 +1,13 @@
+import userEvent from "@testing-library/user-event";
+import { AnimalSearch } from "./AnimalSearch";
+import { render } from "@testing-library/react";
+
+test("Render AnimalSearch", () => {
+  const onSubmitMock = jest.fn(); // jest function better than empty callback...
+
+  const { container } = render(
+    <AnimalSearch onSubmitSearch={onSubmitMock} value={"cow"} />
+  );
+
+  expect(container).toMatchSnapshot();
+});

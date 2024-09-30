@@ -13,9 +13,9 @@ export const dark = {
   text: "#f8f8f8",
 };
 
-export const birindar = {
+export const horriblyunreadable = {
   primary: "purple",
-  background: "yellow",
+  background: "khaki",
   nav: "pink",
   border: "darkpurple",
   text: "deeppink",

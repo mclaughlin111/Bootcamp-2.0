@@ -1,0 +1,17 @@
+import { render, screen, debug } from "@testing-library/react";
+import { App } from "./App"; // Assuming your App component handles the API call
+
+import axios from "axios";
+import { Table } from "./components/table/Table";
+
+describe("Test Reducer", () => {
+  it("Should render Male select option", () => {
+    render(<App />);
+
+    const male = screen.getByText("Male");
+  });
+
+  it("Should render table", async () => {
+    render(<Table />);
+  });
+});

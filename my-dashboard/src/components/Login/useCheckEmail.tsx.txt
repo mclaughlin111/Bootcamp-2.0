@@ -1,0 +1,9 @@
+// import { useState } from "react";
+
+// // Custom hook for checking email validity
+// export const useCheckEmail = (email: string) => {
+//   const checkEmail = ({ email }: UseCheckEmailProps) => {
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex for validation
+//     return emailRegex.test(email);
+//   };
+// };

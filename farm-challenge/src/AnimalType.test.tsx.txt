@@ -1,0 +1,29 @@
+/* eslint-disable no-restricted-globals */
+import userEvent from "@testing-library/user-event";
+import { render, screen } from "@testing-library/react";
+import { AnimalType } from "./AnimalType";
+
+const mockAnimalTypes = [
+  { displayName: "Chicken", type: "chicken" },
+  { displayName: "Goat", type: "Goat" },
+];
+
+test("Render Animal Type Select", () => {
+  const onSubmitMock = jest.fn();
+
+  const { container } = render(
+    <AnimalType onSubmitType={onSubmitMock} value={""} />
+  );
+
+  expect(container).toMatchSnapshot();
+  expect(screen.getByLabelText("Animal Type")).toBeInTheDocument();
+  expect(screen.getByText("None")).toBeInTheDocument();
+
+  mockAnimalTypes.forEach((animal) => {
+    expect(screen.getByText(animal.displayName)).toBeInTheDocument();
+  });
+});
+
+test("When Animal Type is secleted, function called", async () => {
+  const mockOnAnimalTypeChanged = jest.fn();
+});
