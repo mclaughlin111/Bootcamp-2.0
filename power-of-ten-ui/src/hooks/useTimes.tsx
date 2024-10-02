@@ -8,8 +8,8 @@ export const useTimes = (
   distance: string,
   page: number,
   limit: number,
-  sortOrder: SortOrder,
-  sortField: SortField
+  sortOrder?: SortOrder,
+  sortField?: SortField
 ) => {
   const [timesResponse, setTimesResponse] = useState<Response>({
     times: [],
@@ -18,13 +18,18 @@ export const useTimes = (
 
   const axiosInstance = axios.create({
     baseURL: "http://localhost:4000",
+    params: {
+      page: page,
+      limit: limit,
+      sortOrder: sortOrder,
+      sortField: sortField,
+    },
   });
 
   const getTimes = async () => {
     try {
-      const response = await axiosInstance.get<Response>(
-        `/times/${gender}/${distance}?skip=${page}&sortField=${sortField}&limit=${limit}&sortOrder=${sortOrder}`
-      );
+      const response = await axiosInstance.get<Response>(`/times/`);
+      console.log(response);
 
       setTimesResponse(response.data);
     } catch (error) {

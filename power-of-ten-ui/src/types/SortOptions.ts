@@ -1,4 +1,4 @@
-export type SortOrder = "asc" | "desc";
+export type SortOrder = "asc" | "desc" | undefined;
 export type SortField =
   | "rank"
   | "chipTime"
@@ -8,4 +8,4 @@ export type SortField =
   | "venue"
   | "date";
 
-export type SortOptions = SortOrder | SortField;
+export type SortOptions = SortOrder | SortField | null;

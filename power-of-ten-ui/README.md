@@ -29,3 +29,17 @@ This is an exercise to test you knowledge of implementing table-based sorting an
 7. When you use useReducer you **should** use discriminated union actions (https://medium.com/@km87/typescript-discriminated-unions-d3b54bf14399)
 8. I don't want any testing (for now)
 9. I have included video of my solution
+
+## Part 2 - Testing
+
+1. Hopefully you haven't gone off piste and that by the end you have
+
+- A reducer with the action/state logic
+- A hook that does the Axios interactiomn
+- A table that allows the user to click on the header to sort
+
+2. Please unit test in the following order (difficulty ASC)
+
+- The reducer (easy)
+- The axios interaction hook (medium)
+- The table with the sorting algorithm (medium)

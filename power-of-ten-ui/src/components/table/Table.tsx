@@ -45,9 +45,12 @@ export const Table = ({
   tableSize: "medium" | "small";
 }) => {
   const runnersTimesData = times.times;
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   // DUNCAN: do I need this "duplicate" set of state here to store the 2 sort fields being held?
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState<SortOrder>("asc");
+  console.log(order);
+
   const [currentSortField, setCurrentSortField] = useState<SortField>("rank");
 
   const handlePageChange = (
@@ -63,21 +66,19 @@ export const Table = ({
     setRowsPerPage(parseInt(event.target.value));
     setLimit(parseInt(event.target.value));
     setPage(0);
+    setSortField(currentSortField);
   };
 
-  const handleSortClick = (headingID: SortField) => {
-    console.log(headingID);
+  const handleSortLabelClick = (headingId: SortField) => {
+    console.log(headingId);
 
-    handleSortChange({
-      sortField,
-      sortOption: headingID,
-      order,
-      setSortField,
-      setSortOrder,
-      setCurrentSortField,
-      setOrder,
-    });
     setPage(0);
+    handleSortChange({
+      order,
+      setOrder,
+      headingId,
+      setCurrentSortField,
+    });
   };
 
   return (
@@ -90,11 +91,12 @@ export const Table = ({
                 <TableCell key={heading.id}>
                   {heading.label}
                   <TableSortLabel
-                    key={heading.id}
                     active={currentSortField === heading.id}
+                    hideSortIcon={order === undefined}
+                    key={heading.id}
                     direction={order}
                     onClick={() => {
-                      handleSortClick(heading.id as SortField);
+                      handleSortLabelClick(heading.id as SortField);
                     }}
                   ></TableSortLabel>
                 </TableCell>

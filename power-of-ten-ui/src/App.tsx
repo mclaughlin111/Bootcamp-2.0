@@ -2,71 +2,96 @@ import { useReducer, useState } from "react";
 import { Filters } from "./components/Filters";
 import { Table } from "./components/table/Table";
 import { useTimes } from "./hooks/useTimes";
-import { SortField, SortOrder } from "./types/SortOptions";
+import { SortField, SortOrder, SortOptions } from "./types/SortOptions";
 import { CompactToggle } from "./components/CompactToggle";
 
 export const App = () => {
   const genders = ["Male", "Female"];
   const timeOptions = ["Marathon", "Half Marathon", "10km"];
 
-  // typeing below is helpful for the DEVELOPER
-  const apiStateCallParams = {
+  type Action =
+    | { type: "gender"; gender: string }
+    | { type: "distance"; distance: string }
+    | { type: "page"; page: number }
+    | { type: "limit"; limit: number }
+    | { type: "sortField"; sortField: SortField }
+    | { type: "sortOrder"; sortOrder: SortOrder }
+    | { type: "RESET" }; //  reset action Optional
+
+  type ApiCallParams = {
+    gender: string;
+    distance: string;
+    page: number;
+    limit: number;
+    sortOptions: {
+      sortField: SortField;
+      sortOrder: SortOrder;
+    };
+  };
+
+  // Correct initial state structure
+  const initialApiCallParams: ApiCallParams = {
     gender: "male",
     distance: "marathon",
     page: 0,
     limit: 10,
-    sortOrder: "asc" || "desc",
-    sortField: "rank",
+    sortOptions: {
+      sortField: "rank",
+      sortOrder: "asc",
+    },
   };
 
   // REDUCER
-  const [state, dispatch] = useReducer(reducer, apiStateCallParams);
+  const [state, dispatch] = useReducer(reducer, initialApiCallParams);
 
-  function reducer(state: any, action: any) {
+  function reducer(state: ApiCallParams, action: Action): ApiCallParams {
     switch (action.type) {
       case "gender":
         return { ...state, gender: action.gender };
-      // CLARIFY ABOVE LINE re ...state, type: action.payload
       case "distance":
-        return { ...state, distance: action.payload };
+        return { ...state, distance: action.distance };
       case "page":
-        return { ...state, page: action.payload };
+        return { ...state, page: action.page };
       case "limit":
-        return { ...state, limit: action.payload };
-      case "sortOrder":
-        return { ...state, sortOrder: action.payload };
+        return { ...state, limit: action.limit };
       case "sortField":
-        return { ...state, sortField: action.payload };
-      //
+        return {
+          ...state,
+          sortOptions: { ...state.sortOptions, sortField: action.sortField },
+        };
+      case "sortOrder":
+        return {
+          ...state,
+          sortOptions: { ...state.sortOptions, sortOrder: action.sortOrder },
+        };
       case "RESET":
-        return apiStateCallParams;
+        return initialApiCallParams;
       default:
-        return apiStateCallParams;
+        return state;
     }
   }
-
   const handleSortOrderChange = (selectedSortOrder: SortOrder) => {
-    dispatch({ type: "sortOrder", payload: selectedSortOrder });
+    dispatch({ type: "sortOrder", sortOrder: selectedSortOrder });
   };
 
   const handleSortFieldChange = (selectedSortField: SortField) => {
-    dispatch({ type: "sortField", payload: selectedSortField });
+    dispatch({ type: "sortField", sortField: selectedSortField });
   };
 
   const handleGenderChange = (selectedGender: string) => {
-    dispatch({ type: "gender", payload: selectedGender });
+    dispatch({ type: "gender", gender: selectedGender });
   };
 
   const handleDistanceChange = (selectedDistance: string) => {
-    dispatch({ type: "distance", payload: selectedDistance });
+    dispatch({ type: "distance", distance: selectedDistance });
   };
 
   const handlePageChange = (selectedPage: number) => {
-    dispatch({ type: "page", payload: selectedPage });
+    dispatch({ type: "page", page: selectedPage });
   };
 
   const handleLimitChange = (selectedLimit: number) => {
-    dispatch({ type: "limit", payload: selectedLimit });
+    dispatch({ type: "limit", limit: selectedLimit });
   };
 
   // API Call
@@ -75,8 +100,8 @@ export const App = () => {
     state.distance,
     state.page * state.limit,
     state.limit,
-    state.sortOrder,
-    state.sortField
+    state.sortOptions.sortOrder,
+    state.sortOptions.sortField
   );
 
   //Table Compact Toggle
@@ -124,9 +149,9 @@ export const App = () => {
         setPage={handlePageChange}
         limit={state.limit}
         setLimit={handleLimitChange}
-        sortOrder={state.SortOrder}
+        sortOrder={state.sortOptions.sortOrder}
         setSortOrder={handleSortOrderChange}
-        sortField={state.SortField}
+        sortField={state.sortOptions.sortField}
         setSortField={handleSortFieldChange}
         tableSize={tableSize}
       />
