@@ -18,17 +18,21 @@ export const useTimes = (
 
   const axiosInstance = axios.create({
     baseURL: "http://localhost:4000",
-    params: {
-      page: page,
-      limit: limit,
-      sortOrder: sortOrder,
-      sortField: sortField,
-    },
   });
 
   const getTimes = async () => {
     try {
-      const response = await axiosInstance.get<Response>(`/times/`);
+      const response = await axiosInstance.get<Response>(
+        `/times/${gender}/${distance}`,
+        {
+          params: {
+            skip: page,
+            limit: limit,
+            sortOrder: sortOrder,
+            sortField: sortField,
+          },
+        }
+      );
       console.log(response);
 
       setTimesResponse(response.data);

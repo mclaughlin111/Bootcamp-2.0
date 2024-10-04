@@ -4,6 +4,7 @@ import { Table } from "./components/table/Table";
 import { useTimes } from "./hooks/useTimes";
 import { SortField, SortOrder, SortOptions } from "./types/SortOptions";
 import { CompactToggle } from "./components/CompactToggle";
+import "./index.css";
 
 export const App = () => {
   const genders = ["Male", "Female"];
@@ -16,14 +17,15 @@ export const App = () => {
     | { type: "limit"; limit: number }
     | { type: "sortField"; sortField: SortField }
     | { type: "sortOrder"; sortOrder: SortOrder }
-    | { type: "RESET" }; //  reset action Optional
+    | { type: "option"; sortOption: SortOptions }
+    | { type: "RESET" }; // reset action Optional
 
   type ApiCallParams = {
     gender: string;
     distance: string;
     page: number;
     limit: number;
-    sortOptions: {
+    sortOptions?: {
       sortField: SortField;
       sortOrder: SortOrder;
     };
@@ -54,6 +56,8 @@ export const App = () => {
         return { ...state, page: action.page };
       case "limit":
         return { ...state, limit: action.limit };
+      case "option":
+        return { ...state, sortOptions: action.option };
       case "sortField":
         return {
           ...state,
@@ -94,6 +98,10 @@ export const App = () => {
     dispatch({ type: "limit", limit: selectedLimit });
   };
 
+  const handleSortOptionChange = (selectedOption: SortOptions) => {
+    dispatch({ type: "option", option: selectedOption });
+  };
+
   // API Call
   const { timesResponse } = useTimes(
     state.gender,
@@ -103,6 +111,7 @@ export const App = () => {
     state.sortOptions.sortOrder,
     state.sortOptions.sortField
   );
+  console.log(state);
 
   //Table Compact Toggle
   const [tableSize, setTableSize] = useState<"medium" | "small">("medium");
@@ -154,6 +163,7 @@ export const App = () => {
         sortField={state.sortOptions.sortField}
         setSortField={handleSortFieldChange}
         tableSize={tableSize}
+        setSortOption={handleSortOptionChange}
       />
     </>
   );

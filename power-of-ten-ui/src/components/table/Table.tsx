@@ -32,6 +32,7 @@ export const Table = ({
   sortField,
   setSortField,
   tableSize,
+  setSortOption,
 }: {
   times: Response;
   page: number;
@@ -43,15 +44,13 @@ export const Table = ({
   sortField: SortField;
   setSortField: (newSortField: SortField) => void;
   tableSize: "medium" | "small";
+  setSortOption: (newSortOption: SortOptions) => void;
 }) => {
   const runnersTimesData = times.times;
 
-  // DUNCAN: do I need this "duplicate" set of state here to store the 2 sort fields being held?
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [order, setOrder] = useState<SortOrder>("asc");
-  console.log(order);
-
-  const [currentSortField, setCurrentSortField] = useState<SortField>("rank");
+  // DUNCAN: do I need this "duplicate" set of state here to store the 2 sort fields being held? ANSWER: no, you didn't need this duplicate set of state, origin is held in reducer.
+  // const [order, setOrder] = useState<SortOrder>("asc");
+  // const [currentSortField, setCurrentSortField] = useState<SortField>("rank");
 
   const handlePageChange = (
     e: React.MouseEvent<HTMLButtonElement> | null,
@@ -63,22 +62,28 @@ export const Table = ({
   const handleRowsChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value));
     setLimit(parseInt(event.target.value));
+    // setRowsPerPage(parseInt(event.target.value));
     setPage(0);
-    setSortField(currentSortField);
   };
 
-  const handleSortLabelClick = (headingId: SortField) => {
-    console.log(headingId);
-
+  const handleSortLabelClick = (heading: SortField) => {
     setPage(0);
-    handleSortChange({
-      order,
-      setOrder,
-      headingId,
-      setCurrentSortField,
-    });
+    setLimit(10);
+    console.log(heading);
+
+    //set field
+    setSortField(heading.id);
+
+    //toggle order between tri state
+    if (sortOrder === "asc") {
+      setSortOrder("desc");
+    } else if (sortOrder === "desc") {
+      setSortOption(undefined);
+    } else if (sortOrder === undefined) {
+      setSortOrder("asc");
+      setSortField("rank");
+    }
   };
 
   return (
@@ -91,12 +96,12 @@ export const Table = ({
                 <TableCell key={heading.id}>
                   {heading.label}
                   <TableSortLabel
-                    active={currentSortField === heading.id}
-                    hideSortIcon={order === undefined}
+                    active={sortField === heading.id}
+                    direction={sortOrder}
+                    // hideSortIcon={sortOrder} // when not in api call
                     key={heading.id}
-                    direction={order}
                     onClick={() => {
-                      handleSortLabelClick(heading.id as SortField);
+                      handleSortLabelClick(heading.id);
                     }}
                   ></TableSortLabel>
                 </TableCell>
